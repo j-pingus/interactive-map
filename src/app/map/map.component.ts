@@ -31,8 +31,8 @@ export class MapComponent implements OnDestroy {
           chart.raiseCriticalError(new Error("Map geodata could not be loaded. Please download the latest <a href=\"https://www.amcharts.com/download/download-v4/\">amcharts geodata</a> and extract its contents into the same directory as your amCharts files."));
       }
       
-      
       this.label = chart.createChild(am4core.Label)
+      let label=this.label;
       this.label.text = "Blah blah text : Rose Even";
       this.label.fontSize = 12;
       this.label.align = "left";
@@ -139,7 +139,7 @@ export class MapComponent implements OnDestroy {
       
       
       let measelsSeries = chart.series.push(new am4maps.MapPolygonSeries())
-      measelsSeries.tooltip.background.fillOpacity = 0;
+      measelsSeries.tooltip.background.fillOpacity = 0.5;
       measelsSeries.tooltip.background.cornerRadius = 20;
       measelsSeries.tooltip.autoTextColor = false;
       measelsSeries.tooltip.label.fill = am4core.color("#000");
