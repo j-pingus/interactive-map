@@ -18,6 +18,60 @@ export class MapComponent implements OnDestroy {
   public showMessage(message:string){
     this.label.text=message;
   }
+  public home(){
+    this.chart.goHome();
+  }
+  public setHome(zoom:number, latitude:number, longitude:number){
+    console.log(this.chart.homeZoomLevel);
+    console.log(this.chart.homeGeoPoint);
+    this.chart.homeZoomLevel = zoom;
+    this.chart.homeGeoPoint = {
+        latitude: latitude,
+        longitude: longitude
+    };
+  }
+  private cities:am4maps.MapImageSeries;
+  private getCities():am4maps.MapImageSeries{
+    if(this.cities==null){
+      this.cities=this.chart.series.push(new am4maps.MapImageSeries());
+      var city = this.cities.mapImages.template.createChild(am4core.Circle);
+      city.radius = 2;
+      city.fill = this.chart.colors.getIndex(0).brighten(-0.2);
+      city.strokeWidth = 0.5;
+      city.stroke = am4core.color("#fff");
+    }
+    return this.cities;
+  }
+  lineSeries:am4maps.MapArcSeries;
+  private getArcLines():am4maps.MapArcSeries{
+    if(this.lineSeries==null){
+      var lineSeries = this.chart.series.push(new am4maps.MapArcSeries());
+      lineSeries.mapLines.template.line.strokeWidth = 2;
+      lineSeries.mapLines.template.line.strokeOpacity = 0.5;
+      lineSeries.mapLines.template.line.stroke = this.chart.colors.getIndex(0).brighten(-0.2);;
+      lineSeries.mapLines.template.line.nonScalingStroke = true;
+      lineSeries.mapLines.template.line.strokeDasharray = "1,1";
+      lineSeries.zIndex = 10;
+      this.lineSeries=lineSeries;
+    }
+    return this.lineSeries;
+  }
+  public addCity(latitude:number, longitude:number, tooltip:string, component?:any,onClick?:Function):am4maps.MapImage{
+    var city:am4maps.MapImage;
+    city = this.getCities().mapImages.create();
+    city.latitude = latitude;
+    city.longitude = longitude;
+    city.tooltipText = tooltip;
+    city.events.on("hit",function(){
+      onClick(component);
+    });
+    return city;
+  }
+  public addFly(from:am4maps.MapImage, to:am4maps.MapImage) {
+    var line = this.getArcLines().mapLines.create();
+    line.imagesToConnect = [from, to];
+    line.line.controlPointDistance = -0.3;
+}
   ngAfterViewInit() {
     this.zone.runOutsideAngular(() => {
       let chart = am4core.create("chartdiv", am4maps.MapChart);
@@ -58,6 +112,8 @@ export class MapComponent implements OnDestroy {
       
       let homeButton = new am4core.Button();
       homeButton.events.on("hit", function(){
+        chart.homeZoomLevel=1;
+        chart.homeGeoPoint=undefined;
         chart.goHome();
       });
       
@@ -249,7 +305,7 @@ export class MapComponent implements OnDestroy {
         "LR": 692.27,
         "LS": 5.9,
         "LT": 14.44,
-        "LU": 6.95,
+       // "LU": 6.95,
         "LV": 6.09,
         "MA": 0.2,
         "MD": 83.75,
