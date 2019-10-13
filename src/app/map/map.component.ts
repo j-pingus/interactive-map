@@ -22,8 +22,6 @@ export class MapComponent implements OnDestroy {
     this.chart.goHome();
   }
   public setHome(zoom:number, latitude:number, longitude:number){
-    console.log(this.chart.homeZoomLevel);
-    console.log(this.chart.homeGeoPoint);
     this.chart.homeZoomLevel = zoom;
     this.chart.homeGeoPoint = {
         latitude: latitude,
@@ -77,7 +75,7 @@ export class MapComponent implements OnDestroy {
       let chart = am4core.create("chartdiv", am4maps.MapChart);
   
       let interfaceColors = new am4core.InterfaceColorSet();
-
+      console.log(am4geodata_worldLow);
       try {
           chart.geodata = am4geodata_worldLow;
       }
@@ -92,8 +90,10 @@ export class MapComponent implements OnDestroy {
       this.label.align = "left";
       this.label.valign = "bottom"
       this.label.fill = am4core.color("#927459");
-      this.label.background = new am4core.RoundedRectangle()
-      this.label.background.cornerRadius(10,10,10,10);
+      var background :am4core.RoundedRectangle;
+      background=new am4core.RoundedRectangle()
+      this.label.background=background;
+      background.cornerRadius(10,10,10,10);
       this.label.padding(10,10,10,10);
       this.label.marginLeft = 30;
       this.label.marginBottom = 30;
@@ -134,7 +134,7 @@ export class MapComponent implements OnDestroy {
       // Create map polygon series
       
       let shadowPolygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-      shadowPolygonSeries.geodata = am4geodata_continentsLow;
+      //shadowPolygonSeries.geodata = am4geodata_continentsLow;
       
       try {
           shadowPolygonSeries.geodata = am4geodata_continentsLow;
@@ -214,26 +214,28 @@ export class MapComponent implements OnDestroy {
       hs2.properties.fill = am4core.color("#86240c");
       
       polygonSeries.events.on("inited", function () {
-        polygonSeries.mapPolygons.each(function (mapPolygon) {
+        polygonSeries.mapPolygons.each(function (mapPolygon:am4maps.MapPolygon) {
           let count = data[mapPolygon.id];
       
           if (count > 0) {
             let polygon = measelsSeries.mapPolygons.create();
             polygon.multiPolygon = am4maps.getCircle(mapPolygon.visualLongitude, mapPolygon.visualLatitude, Math.max(0.2, Math.log(count) * Math.LN10 / 10));
-            polygon.tooltipText = mapPolygon.dataItem.dataContext.name + ": " + count;
+            polygon.tooltipText = //mapPolygon.dataItem.dataContext.name + ": " + 
+            count;
             mapPolygon.dummyData = polygon;
             polygon.events.on("over", function () {
               mapPolygon.isHover = true;
             });
             polygon.events.on("hit", function () {
-              label.text = mapPolygon.dataItem.dataContext.name + ": " + count;
+              label.text = polygon.tooltipText;
             });
             polygon.events.on("out", function () {
               mapPolygon.isHover = false;
             });
           }
           else {
-            mapPolygon.tooltipText = mapPolygon.dataItem.dataContext.name + ": no data";
+            mapPolygon.tooltipText = //mapPolygon.dataItem.dataContext.name + 
+            ": no data";
             mapPolygon.fillOpacity = 0.9;
           }
       
