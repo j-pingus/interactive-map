@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MapComponent } from '../map/map.component';
+import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
@@ -7,8 +9,16 @@ import { MapComponent } from '../map/map.component';
 })
 export class ContentComponent implements OnInit {
   @Input() map : MapComponent;
-  constructor() { }
-  html_content : String;
+  constructor(private sanitizer: DomSanitizer) { 
+    this._htmlContent="<br/>";
+  }
+  private _htmlContent : any;
+  set htmlContent(value:any){
+    this._htmlContent=this.sanitizer.bypassSecurityTrustHtml(value);
+  }
+  get htmlContent():any{
+    return this._htmlContent;
+  }
   ngOnInit() {
   }
   goLuxembourg(){
@@ -26,14 +36,15 @@ export class ContentComponent implements OnInit {
     this.luxembourg=this.map.addCity(49.62083333,6.12527259,"Luxembourg",this,this.visitLuxembourg);
   }
   public visitLuxembourg(content:ContentComponent){
-    content.html_content="You just clicked Luxembourg";
+    content.htmlContent="You just <i>clicked</i> on <a href=\"https://vdl.lu\" target=\"_blank\">Luxembourg</a><br/><br/>"+
+    "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/KpDRGBjmwHM\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>";
   }
   newYork:any;
   addNewYork(){
     if(this.newYork==null)
     
     this.newYork=this.map.addCity(40.715561, -74.003019,"New York",this, function(content:ContentComponent){
-      content.html_content="Yeah !! New York man !!";
+      content.htmlContent="Yeah !! <b>New York</b> man !!";
     });
   }
   fly:any;

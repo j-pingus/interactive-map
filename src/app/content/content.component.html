@@ -4,6 +4,6 @@
         <button (click)="goNewYork()">go New York</button>
         <button (click)="addNewYork()">add New York</button>
         <button (click)="addfly()">Fly Luxembourg to New York</button>
-        <p>content works!</p>
-        {{html_content}}
+        <p [innerHTML]="htmlContent"></p>
+        
     </div>
