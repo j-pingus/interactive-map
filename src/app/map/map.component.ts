@@ -3,7 +3,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4geodata_continentsLow from "@amcharts/amcharts4-geodata/continentsLow";
-import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
+import am4geodata_worldHigh from "@amcharts/amcharts4-geodata/worldHigh";
 am4core.useTheme(am4themes_animated);
 
 @Component({
@@ -80,7 +80,7 @@ export class MapComponent implements OnDestroy {
       let interfaceColors = new am4core.InterfaceColorSet();
 
       try {
-          chart.geodata = am4geodata_worldLow;
+          chart.geodata = am4geodata_worldHigh;
       }
       catch (e) {
           chart.raiseCriticalError(new Error("Map geodata could not be loaded. Please download the latest <a href=\"https://www.amcharts.com/download/download-v4/\">amcharts geodata</a> and extract its contents into the same directory as your amCharts files."));
