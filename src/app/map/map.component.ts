@@ -67,10 +67,11 @@ export class MapComponent implements OnDestroy {
     });
     return city;
   }
-  public addFly(from:am4maps.MapImage, to:am4maps.MapImage) {
-    var line = this.getArcLines().mapLines.create();
+  public addFly(from:am4maps.MapImage, to:am4maps.MapImage):am4maps.MapArc {
+    var line:am4maps.MapArc = this.getArcLines().mapLines.create();
     line.imagesToConnect = [from, to];
     line.line.controlPointDistance = -0.3;
+    return line;
 }
   ngAfterViewInit() {
     this.zone.runOutsideAngular(() => {

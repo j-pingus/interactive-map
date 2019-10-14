@@ -10,8 +10,6 @@ export class ContentComponent implements OnInit {
   constructor() { }
   html_content : String;
   ngOnInit() {
-    console.log("map");
-    console.log(this.map);
   }
   goLuxembourg(){
     //"MEAN_BBXC":,"MEAN_BBYC":
@@ -19,7 +17,7 @@ export class ContentComponent implements OnInit {
     this.map.home();
   }
   goNewYork(){
-    this.map.setHome(5.5,43.15109455,-77.58916483);
+    this.map.setHome(5.5,40.715561, -74.003019);
     this.map.home();
   }
   luxembourg:any;
@@ -33,14 +31,17 @@ export class ContentComponent implements OnInit {
   newYork:any;
   addNewYork(){
     if(this.newYork==null)
-    this.newYork=this.map.addCity(43.15109455,-77.58916483,"New York",this, function(content:ContentComponent){
+    
+    this.newYork=this.map.addCity(40.715561, -74.003019,"New York",this, function(content:ContentComponent){
       content.html_content="Yeah !! New York man !!";
     });
   }
   fly:any;
   addfly(){
-    if(this.luxembourg!=null && this.newYork!=null&&this.fly==null ){
+    if(this.luxembourg!=null && this.newYork!=null && this.fly==null ){
       this.fly=this.map.addFly(this.luxembourg,this.newYork);
     }
+    this.map.setHome(2.5,60.336119, -35.017729);
+    this.map.home();
   }
 }
