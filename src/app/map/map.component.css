@@ -1,5 +1,4 @@
-div{
-    border: 1px solid red;
-    width: 600px; 
+#chartdiv{
+    min-height: 600px;
     height: 500px;
 }
