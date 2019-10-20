@@ -91,11 +91,53 @@ export class MapComponent implements OnDestroy {
         var line:am4maps.MapArc = this.getArcLines().mapLines.create();
         line.imagesToConnect = [from, to];
         line.line.controlPointDistance = -0.3;
+        var plane = line.lineObjects.create();
+        plane.position = 0;
+        plane.width = 48;
+        plane.height = 48;
+        plane.adapter.add("scale", function(scale, target) {
+            return 0.5 * (1 - (Math.abs(0.5 - target.position)));
+        })
+        var planeImage = plane.createChild(am4core.Sprite);
+        planeImage.scale = 0.08;
+        planeImage.horizontalCenter = "middle";
+        planeImage.verticalCenter = "middle";
+        planeImage.path = "m2,106h28l24,30h72l-44,-133h35l80,132h98c21,0 21,34 0,34l-98,0 -80,134h-35l43,-133h-71l-24,30h-28l15,-47";
+        planeImage.fill = this.chart.colors.getIndex(2).brighten(-0.2);
+        planeImage.strokeOpacity = 0;
+        var direction = 0;
+        function flyPlane() {
+          if(direction==0){
+              if (planeImage.rotation != 0) {
+                planeImage.animate({ to: 0, property: "rotation" }, 1000).events.on("animationended", flyPlane);
+                return;
+              }
+              plane.animate({
+                from: 0,
+                to: 1,
+                property: "position"
+              }, 5000, am4core.ease.sinInOut).events.on("animationended", flyPlane);
+              direction=1;
+          }else{
+            if (planeImage.rotation != 180) {
+              planeImage.animate({ to: 180, property: "rotation" }, 1000).events.on("animationended", flyPlane);
+              return;
+            }
+            plane.animate({
+              from: 1,
+              to: 0,
+              property: "position"
+            }, 5000, am4core.ease.sinInOut).events.on("animationended", flyPlane);
+            direction=0;
+          } 
+        }
+        flyPlane();
         return line;
       }
     }
     return null;
 }
+
   ngAfterViewInit() {
     this.zone.runOutsideAngular(() => {
       let chart = am4core.create("chartdiv", am4maps.MapChart);
