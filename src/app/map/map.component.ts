@@ -152,7 +152,7 @@ export class MapComponent implements OnDestroy {
       
       this.label = chart.createChild(am4core.Label)
       let label=this.label;
-      this.label.text = "Blah blah text : Rose Even";
+      this.label.text = "Author : Even";
       this.label.fontSize = 12;
       this.label.align = "left";
       this.label.valign = "bottom"
