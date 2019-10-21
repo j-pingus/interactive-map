@@ -14,6 +14,16 @@ am4core.useTheme(am4themes_animated);
 export class MapComponent implements OnDestroy {
   private chart: am4maps.MapChart;
   private label: am4core.Label;
+  private country: string = "#47c78a";
+  private countryLines: string = "#454a58";
+  private background: string = "#404040";
+  private cityStroke: string = "#fff";
+  private cityFill: string = this.country;
+  private labelFill: string = this.country;
+  private labelLine: string = this.cityStroke;
+  private shadowFill: string = "#0F0";
+  private countryHover: string = "#57d79a";
+  private meridianLines: string = "#fff";
   constructor(private zone: NgZone) { }
   public showMessage(message:string){
     this.label.text=message;
@@ -45,10 +55,10 @@ export class MapComponent implements OnDestroy {
     if(this.cities==null){
       this.cities=this.chart.series.push(new am4maps.MapImageSeries());
       var city = this.cities.mapImages.template.createChild(am4core.Circle);
-      city.radius = 2;
-      city.fill = this.chart.colors.getIndex(0).brighten(-0.2);
-      city.strokeWidth = 0.5;
-      city.stroke = am4core.color("#fff");
+      city.radius = 1;
+      city.fill = am4core.color(this.cityFill);
+      city.strokeWidth = 0.25;
+      city.stroke = am4core.color(this.cityStroke);
     }
     return this.cities;
   }
@@ -73,7 +83,7 @@ export class MapComponent implements OnDestroy {
       city = this.getCities().mapImages.create();
       city.latitude = latitude;
       city.longitude = longitude;
-      city.tooltipText = tooltip;
+      city.tooltipHTML = tooltip;
       this.citiesMap.set(id,city);
       if(onClick){
         city.events.on("hit",function(){
@@ -141,8 +151,7 @@ export class MapComponent implements OnDestroy {
   ngAfterViewInit() {
     this.zone.runOutsideAngular(() => {
       let chart = am4core.create("chartdiv", am4maps.MapChart);
-  
-      let interfaceColors = new am4core.InterfaceColorSet();
+      am4core.useTheme(am4themes_animated);
       try {
           chart.geodata = am4geodata_worldHigh;
       }
@@ -156,7 +165,7 @@ export class MapComponent implements OnDestroy {
       this.label.fontSize = 12;
       this.label.align = "left";
       this.label.valign = "bottom"
-      this.label.fill = am4core.color("#927459");
+      this.label.fill = am4core.color(this.labelFill);
       var background = new am4core.RoundedRectangle();
       this.label.background = background;
       background.cornerRadius(10,10,10,10);
@@ -164,8 +173,8 @@ export class MapComponent implements OnDestroy {
       this.label.marginLeft = 30;
       this.label.marginBottom = 30;
       this.label.background.strokeOpacity = 0.3;
-      this.label.background.stroke =am4core.color("#927459");
-      this.label.background.fill = am4core.color("#f9e3ce");
+      this.label.background.stroke =am4core.color(this.labelLine);
+      this.label.background.fill = am4core.color(this.labelFill);
       this.label.background.fillOpacity = 0.6;
       
       // Set projection
@@ -191,7 +200,7 @@ export class MapComponent implements OnDestroy {
       homeButton.parent = chart.zoomControl;
       homeButton.insertBefore(chart.zoomControl.plusButton);
       
-      chart.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color("#bfa58d");
+      chart.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color(this.background);
       chart.backgroundSeries.mapPolygons.template.polygon.fillOpacity = 1;
       chart.deltaLongitude = 20;
       chart.deltaLatitude = -20;
@@ -212,12 +221,13 @@ export class MapComponent implements OnDestroy {
       shadowPolygonSeries.useGeodata = true;
       shadowPolygonSeries.dx = 2;
       shadowPolygonSeries.dy = 2;
-      shadowPolygonSeries.mapPolygons.template.fill = am4core.color("#000");
+      shadowPolygonSeries.mapPolygons.template.fill = am4core.color(this.shadowFill);
       shadowPolygonSeries.mapPolygons.template.fillOpacity = 0.2;
       shadowPolygonSeries.mapPolygons.template.strokeOpacity = 0;
       shadowPolygonSeries.fillOpacity = 0.1;
-      shadowPolygonSeries.fill = am4core.color("#000");
+      shadowPolygonSeries.fill = am4core.color(this.shadowFill);
       
+      let graticuleSeries = chart.series.push(new am4maps.GraticuleSeries());
       
       // Create map polygon series
       let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
@@ -229,8 +239,8 @@ export class MapComponent implements OnDestroy {
       
       let template = polygonSeries.mapPolygons.template;
       template.nonScalingStroke = true;
-      template.fill = am4core.color("#f9e3ce");
-      template.stroke = am4core.color("#e2c9b0");
+      template.fill = am4core.color(this.country);
+      template.stroke = am4core.color(this.countryLines);
       
       polygonSeries.calculateVisualCenter = true;
       template.propertyFields.id = "id";
@@ -238,14 +248,12 @@ export class MapComponent implements OnDestroy {
       template.fillOpacity = 1;
       let hs = polygonSeries.mapPolygons.template.states.create("hover");
       hs.properties.fillOpacity = 1;
-      hs.properties.fill = am4core.color("#deb7ad");
+      hs.properties.fill = am4core.color(this.countryHover);
       
       
-      let graticuleSeries = chart.series.push(new am4maps.GraticuleSeries());
-      graticuleSeries.mapLines.template.stroke = am4core.color("#fff");
       graticuleSeries.fitExtent = false;
       graticuleSeries.mapLines.template.strokeOpacity = 0.2;
-      graticuleSeries.mapLines.template.stroke = am4core.color("#fff");
+      graticuleSeries.mapLines.template.stroke = am4core.color(this.meridianLines);
 
       this.chart = chart;
     });
