@@ -21,38 +21,27 @@ export class ContentComponent implements OnInit {
     return this._htmlContent;
   }
   ngOnInit() {
+ }
+  goEuropa(){
+    this.map.go(8.5,49.978346, 7.892255);
   }
-  goLuxembourg(){
-    this.map.go(8.5,49.62083333,6.12527259);
-  }
-  goNewYork(){
-    this.map.go(5.5,40.715561, -74.003019);
-  }
-
-  addLuxembourg(){
-    this.addCityToMap("LU-LU",49.62083333,6.12527259,"Luxembourg",
-    "You just <i>clicked</i> on <a href=\"https://vdl.lu\" target=\"_blank\">Luxembourg</a><br/><br/>"+
-    "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/KpDRGBjmwHM\" frameborder=\"0\""+
-    " allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen>Soon video here !</iframe>");
+  goAustralia(){
+    this.map.go(5.5,-23.098499, 133.654900);
   }
 
-  addNewYork(){
-    this.addCityToMap("US-NY",40.715561, -74.003019,"New York",
-        "Yeah !! <b>New York</b> man !!");
-  }
-  private addCityToMap(id:string, latitude:number, longitude:number,tooltip:string,html:string){
-    this.map.addCity(id,latitude,longitude,tooltip,this,function(content:ContentComponent){
-      content.htmlContent=html;
-    });  
-  }
-  private addCityWithPage(id:string, latitude:number, longitude:number,tooltip:string){
-    this.map.addCity(id,latitude,longitude,tooltip,this,function(content:ContentComponent){
-      content.http.get('assets/locations/'+id+".html", {responseType: 'text'})
-      .subscribe(data => 
-        {
-          content.htmlContent=data;
-        });
+  getPage(id:String){
+    this.http.get('assets/locations/'+id+".html", {responseType: 'text'})
+    .subscribe(data => 
+      {
+        this.htmlContent=data;
       });
+      
+    }
+    private addCityWithPage(id:string, latitude:number, longitude:number,tooltip:string){
+      this.map.addCity(id,latitude,longitude,tooltip,this,function(content:ContentComponent){
+          content.map.go(3.5,latitude,longitude);
+          content.getPage(id);
+        });
     }
   fly:any;
   addfly(){
@@ -62,7 +51,13 @@ export class ContentComponent implements OnInit {
     this.map.go(2.5,60.336119, -35.017729);
   }
   ngAfterViewInit(){
-    this.addCityWithPage("FR-PA",48.857232, 2.352894,"paris");
-  }
+    //this.addCityWithPage("FR-PA",48.857232, 2.352894,"paris");
+    this.map.addGroupOfCountries("EU","Europa",
+      ['FR','GB','IE','BE','DE','LU','NL','GB','IT','AT','CH','CZ','ES','PT','PL','SK','HU','SI','HR','NO','SE','FI','EE','LV','LT','GR'],
+      this,function(content:ContentComponent){
+      content.getPage("EU");
+    });
+    this.map.addGroupOfCountries("AU","Australien",['AU'],this,function(content:ContentComponent){content.getPage("AU");});
+   }
 }
     

@@ -4,3 +4,8 @@ div{
     min-height: 500px;
     padding: 5px;
 }
+.scroll-me{
+    border: 1px solid red;
+    max-height: 530px;
+    overflow-y: auto;
+}

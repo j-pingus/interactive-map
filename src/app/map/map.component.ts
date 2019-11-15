@@ -18,7 +18,7 @@ export class MapComponent implements OnDestroy {
   private countryLines: string = "#454a58";
   private background: string = "#404040";
   private cityStroke: string = "#fff";
-  private cityFill: string = this.country;
+  private cityFill: string = this.background;
   private labelFill: string = this.country;
   private labelLine: string = this.cityStroke;
   private shadowFill: string = "#0F0";
@@ -94,7 +94,7 @@ export class MapComponent implements OnDestroy {
     if(this.cities==null){
       this.cities=this.chart.series.push(new am4maps.MapImageSeries());
       var city = this.cities.mapImages.template.createChild(am4core.Circle);
-      city.radius = 1;
+      city.radius = 5;
       city.fill = am4core.color(this.cityFill);
       city.strokeWidth = 0.25;
       city.stroke = am4core.color(this.cityStroke);
@@ -114,6 +114,22 @@ export class MapComponent implements OnDestroy {
       this.lineSeries=lineSeries;
     }
     return this.lineSeries;
+  }
+  public addGroupOfCountries(name:string,tooltip:string,includedCountries:string[],component?:any,onClick?:Function){
+      let series = this.chart.series.push(new am4maps.MapPolygonSeries());
+      series.name = name;
+      series.useGeodata = true;
+      series.include = includedCountries;
+      series.fill = am4core.color("#bf2148");
+      let mapPolygonTemplate = series.mapPolygons.template;
+      // Instead of our custom title, we could also use {name} which comes from geodata  
+      mapPolygonTemplate.fill = am4core.color(series.fill);
+      mapPolygonTemplate.tooltipText=tooltip+':{name}';
+      if(onClick){
+        series.events.on("hit",function(){
+          onClick(component);
+        })
+      }
   }
   citiesMap : Map<string,am4maps.MapImage> = new Map();
   public addCity(id:string, latitude:number, longitude:number, tooltip:string, component?:any,onClick?:Function):am4maps.MapImage{
@@ -201,7 +217,6 @@ export class MapComponent implements OnDestroy {
       }
       
       this.label = chart.createChild(am4core.Label)
-      let label=this.label;
       this.label.text = "Author : Even";
       this.label.fontSize = 12;
       this.label.align = "left";
@@ -290,7 +305,7 @@ export class MapComponent implements OnDestroy {
       let hs = polygonSeries.mapPolygons.template.states.create("hover");
       hs.properties.fillOpacity = 1;
       hs.properties.fill = am4core.color(this.countryHover);
-      
+      polygonSeries.mapPolygons.template.tooltipText="{name} ({id})";
       
       graticuleSeries.fitExtent = false;
       graticuleSeries.mapLines.template.strokeOpacity = 0.2;
