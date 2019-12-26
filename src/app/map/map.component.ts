@@ -235,6 +235,7 @@ export class MapComponent implements OnDestroy {
       
       // Set projection
       chart.projection = new am4maps.projections.Orthographic;
+      //chart.projection = new am4maps.projections.Mercator;
       chart.panBehavior = "rotateLongLat";
       chart.padding(20,20,20,20);
       
@@ -310,7 +311,7 @@ export class MapComponent implements OnDestroy {
       graticuleSeries.fitExtent = false;
       graticuleSeries.mapLines.template.strokeOpacity = 0.2;
       graticuleSeries.mapLines.template.stroke = am4core.color(this.meridianLines);
-
+      
       this.chart = chart;
     });
  }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { MapComponent } from '../map/map.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css']
 })
-export class ContentComponent implements OnInit {
+export class ContentComponent implements OnInit,AfterViewInit {
   @Input() map : MapComponent;
   constructor(private sanitizer: DomSanitizer,private http:HttpClient) { 
     this._htmlContent="<br/>";
@@ -28,7 +28,13 @@ export class ContentComponent implements OnInit {
   goAustralia(){
     this.map.go(5.5,-23.098499, 133.654900);
   }
-
+  getIntroduction(){
+    this.http.get('assets/Introduction.html',{responseType: 'text'})
+    .subscribe(data =>
+      {
+        this.htmlContent=data;
+      })
+  }
   getPage(id:String){
     this.http.get('assets/locations/'+id+".html", {responseType: 'text'})
     .subscribe(data => 
@@ -51,13 +57,21 @@ export class ContentComponent implements OnInit {
     this.map.go(2.5,60.336119, -35.017729);
   }
   ngAfterViewInit(){
-    //this.addCityWithPage("FR-PA",48.857232, 2.352894,"paris");
+    this.getIntroduction();
     this.map.addGroupOfCountries("EU","Europa",
-      ['FR','GB','IE','BE','DE','LU','NL','GB','IT','AT','CH','CZ','ES','PT','PL','SK','HU','SI','HR','NO','SE','FI','EE','LV','LT','GR'],
+      ['FR','GB','IE','BE','DE','LU','NL','GB','IT','AT','CH','DK','CZ','ES','PT','PL','SK','HU','SI','HR','NO','SE','FI','EE','LV','LT','GR'],
       this,function(content:ContentComponent){
-      content.getPage("EU");
+      content.getPage("Europa");
     });
-    this.map.addGroupOfCountries("AU","Australien",['AU'],this,function(content:ContentComponent){content.getPage("AU");});
+    this.map.addGroupOfCountries("AU","Australien",['AU'],this,function(content:ContentComponent){content.getPage("Australien");});
+    this.map.addGroupOfCountries("US","Nordamerika",['US','CA'],this,function(content:ContentComponent){content.getPage("Nordamerika");});
+    this.map.addGroupOfCountries("AF","Afrika",['GO','JU','ZW','ZM','ZA','UG','TZ','TN','TG','TD','SC','SZ','ST','SO','SL','SH','SN',
+    'SS','SD','EH','RW','RE','PT','NG','NE','NA','YT','MW','MU','MR','MZ','ML','MG','MA',
+    'LS','LY','LR','KE','GQ','GW','GM','GN','GH','GA','ET','ES','ER','EG','DZ','DJ','CV',
+    'KM','CG','CD','CM','CI','CF','BW','BF','BJ','BI','AO'],this,function(content:ContentComponent){content.getPage("Afrika");});
+    
+
+
    }
 }
     
