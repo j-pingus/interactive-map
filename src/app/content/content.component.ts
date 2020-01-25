@@ -64,7 +64,10 @@ export class ContentComponent implements OnInit,AfterViewInit {
       content.getPage("Europa");
     });
     this.map.addGroupOfCountries("AU","Australien",['AU'],this,function(content:ContentComponent){content.getPage("Australien");});
-    this.map.addGroupOfCountries("US","Nordamerika",['US','CA'],this,function(content:ContentComponent){content.getPage("Nordamerika");});
+    this.map.addGroupOfCountries("US","Nordamerika",['AW','AG','AI','BS','BL','BZ','BM','BB','CA','CR','CU','CW','KY','DM','DO','GP','GD','GL','GT',
+    'HN','HT','JM','KN','LC','MF','MX','MS','MQ','NI','PA','PR','SV','PM','SX','TC','TT','US','VC',
+    'VG','VI','BQ'],this,function(content:ContentComponent){content.getPage("Nordamerika");});  
+    this.map.addGroupOfCountries("SA","Sudamerika",['AR','BO','BR','CL','CO','EC','FK','GF','GY','PE','PY','SR','UY','VE'],this,function(content:ContentComponent){content.getPage("Sudamerika");});
     this.map.addGroupOfCountries("AF","Afrika",['GO','JU','ZW','ZM','ZA','UG','TZ','TN','TG','TD','SC','SZ','ST','SO','SL','SH','SN',
     'SS','SD','EH','RW','RE','PT','NG','NE','NA','YT','MW','MU','MR','MZ','ML','MG','MA',
     'LS','LY','LR','KE','GQ','GW','GM','GN','GH','GA','ET','ES','ER','EG','DZ','DJ','CV',
