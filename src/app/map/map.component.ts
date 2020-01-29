@@ -115,7 +115,8 @@ export class MapComponent implements OnDestroy {
     }
     return this.lineSeries;
   }
-  public addGroupOfCountries(name:string,tooltip:string,includedCountries:string[],component?:any,onClick?:Function){
+  public addGroupOfCountries(name:string,tooltip:string,
+    includedCountries:string[],color:string,component?:any,onClick?:Function){
       let series = this.chart.series.push(new am4maps.MapPolygonSeries());
       series.name = name;
       series.useGeodata = true;
@@ -123,7 +124,7 @@ export class MapComponent implements OnDestroy {
       series.fill = am4core.color("#bf2148");
       let mapPolygonTemplate = series.mapPolygons.template;
       // Instead of our custom title, we could also use {name} which comes from geodata  
-      mapPolygonTemplate.fill = am4core.color(series.fill);
+      mapPolygonTemplate.fill = am4core.color(am4core.color(color));
       mapPolygonTemplate.tooltipText=tooltip+':{name}';
       if(onClick){
         series.events.on("hit",function(){

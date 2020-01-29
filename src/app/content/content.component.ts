@@ -59,20 +59,39 @@ export class ContentComponent implements OnInit,AfterViewInit {
   ngAfterViewInit(){
     this.getIntroduction();
     this.map.addGroupOfCountries("EU","Europa",
-      ['FR','GB','IE','BE','DE','LU','NL','GB','IT','AT','CH','DK','CZ','ES','PT','PL','SK','HU','SI','HR','NO','SE','FI','EE','LV','LT','GR'],
-      this,function(content:ContentComponent){
+      ['GI','NL','VA','UA','TR','SE','SI','SK','RS','SM','RO','PT','PL','SJ','NO','ME','MT',
+      'MK','MD','MC','LV','LU','LT','LI','XK','JE','IT','IS','IE','IM','HU','HR','GR','GG','GE',
+      'FR','FO','FI','EE','ES','GB','DK','DE','CZ','CY','CH','BE','BY','BA','BG','AZ','AT','AM',
+      'AD','AX','AL'      ],
+      "#3f60a6"
+      ,this,function(content:ContentComponent){
       content.getPage("Europa");
     });
-    this.map.addGroupOfCountries("AU","Australien",['AU'],this,function(content:ContentComponent){content.getPage("Australien");});
-    this.map.addGroupOfCountries("US","Nordamerika",['AW','AG','AI','BS','BL','BZ','BM','BB','CA','CR','CU','CW','KY','DM','DO','GP','GD','GL','GT',
+    this.map.addGroupOfCountries("AU","Australien",['AU'],"#FF6E6E"
+    ,this,function(content:ContentComponent){content.getPage("Australien");});
+    this.map.addGroupOfCountries("US","Nordamerika",['AW','AG','AI','BS','BL','BZ','BM','BB','CA',
+    'CR','CU','CW','KY','DM','DO','GP','GD','GL','GT',
     'HN','HT','JM','KN','LC','MF','MX','MS','MQ','NI','PA','PR','SV','PM','SX','TC','TT','US','VC',
-    'VG','VI','BQ'],this,function(content:ContentComponent){content.getPage("Nordamerika");});  
-    this.map.addGroupOfCountries("SA","Sudamerika",['AR','BO','BR','CL','CO','EC','FK','GF','GY','PE','PY','SR','UY','VE'],this,function(content:ContentComponent){content.getPage("Sudamerika");});
-    this.map.addGroupOfCountries("AF","Afrika",['GO','JU','ZW','ZM','ZA','UG','TZ','TN','TG','TD','SC','SZ','ST','SO','SL','SH','SN',
+    'VG','VI','BQ'],
+    "#37e324"
+    ,this,function(content:ContentComponent){content.getPage("Nordamerika");});  
+    this.map.addGroupOfCountries("SA","Sudamerika",['AR','BO','BR','CL','CO','EC','FK','GF','GY','PE',
+    'PY','SR','UY','VE'],
+    "#E89A51"
+    ,this,function(content:ContentComponent){content.getPage("Sudamerika");});
+    this.map.addGroupOfCountries("AF","Afrika",['GO','JU','ZW','ZM','ZA','UG','TZ','TN','TG',
+    'TD','SC','SZ','ST','SO','SL','SH','SN',
     'SS','SD','EH','RW','RE','PT','NG','NE','NA','YT','MW','MU','MR','MZ','ML','MG','MA',
     'LS','LY','LR','KE','GQ','GW','GM','GN','GH','GA','ET','ES','ER','EG','DZ','DJ','CV',
-    'KM','CG','CD','CM','CI','CF','BW','BF','BJ','BI','AO'],this,function(content:ContentComponent){content.getPage("Afrika");});
-    
+    'KM','CG','CD','CM','CI','CF','BW','BF','BJ','BI','AO'],
+    "#fffa6e"
+    ,this,function(content:ContentComponent){content.getPage("Afrika");});
+    this.map.addGroupOfCountries("AS","Asien",[
+    'YE','PS','VN','UZ','TW','TL','TM','TJ','TH','SY','SG','SA','QA','KP','PG','PH',
+    'PK','OM','NP','MY','MN','MM','MV','MO','LK','LB','LA','KW','KR','KH','KG','KZ','JP',
+    'JO','IL','IR','IQ','IO','IN','ID','HK','CN','BT','BN','BH','BD','AE','AF' ],
+    "#57d79a"
+    ,this,function(content:ContentComponent){content.getPage("Asien");})
 
 
    }
