@@ -81,8 +81,8 @@ export class ContentComponent implements OnInit,AfterViewInit {
     ,this,function(content:ContentComponent){content.getPage("Sudamerika");});
     this.map.addGroupOfCountries("AF","Afrika",['GO','JU','ZW','ZM','ZA','UG','TZ','TN','TG',
     'TD','SC','SZ','ST','SO','SL','SH','SN',
-    'SS','SD','EH','RW','RE','PT','NG','NE','NA','YT','MW','MU','MR','MZ','ML','MG','MA',
-    'LS','LY','LR','KE','GQ','GW','GM','GN','GH','GA','ET','ES','ER','EG','DZ','DJ','CV',
+    'SS','SD','EH','RW','RE','NG','NE','NA','YT','MW','MU','MR','MZ','ML','MG','MA',
+    'LS','LY','LR','KE','GQ','GW','GM','GN','GH','GA','ET','ER','EG','DZ','DJ','CV',
     'KM','CG','CD','CM','CI','CF','BW','BF','BJ','BI','AO'],
     "#fffa6e"
     ,this,function(content:ContentComponent){content.getPage("Afrika");});

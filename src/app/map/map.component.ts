@@ -218,7 +218,7 @@ export class MapComponent implements OnDestroy {
       }
       
       this.label = chart.createChild(am4core.Label)
-      this.label.text = "Author : Even";
+      this.label.text = "Even Rose, Gaspar Elodie, Schons Lucie, Dichter Vera, jPingus";
       this.label.fontSize = 12;
       this.label.align = "left";
       this.label.valign = "bottom"
